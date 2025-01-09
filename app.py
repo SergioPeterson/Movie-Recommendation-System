@@ -1,4 +1,7 @@
 from flask import Flask, request, jsonify
+from recommender import get_recommendations
+import psycopg2
+from priv.constants import PASSWORD  
 
 app = Flask(__name__)
 
@@ -14,9 +17,23 @@ def rate_movie():
     user_id = data['user_id']
     movie_id = data['movie_id']
     rating = data['rating']
-    # Add to the database (pseudo-code)
-    # save_rating_to_db(user_id, movie_id, rating)
-    return jsonify({'message': 'Rating submitted successfully'})
+
+    # Add the new rating to the database
+    try:
+        conn = psycopg2.connect(
+            dbname="moviedb", user="postgres", password=PASSWORD, host="localhost"
+        )
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO Ratings (user_id, movie_id, rating, timestamp) VALUES (%s, %s, %s, EXTRACT(EPOCH FROM NOW()))",
+            (user_id, movie_id, rating)
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return jsonify({'message': 'Rating submitted successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

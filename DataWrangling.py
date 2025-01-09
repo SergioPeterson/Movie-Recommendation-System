@@ -1,8 +1,8 @@
 import pandas as pd
 
 # Load MovieLens datasets
-movies = pd.read_csv("movies.csv")  # Ensure you have the MovieLens dataset
-ratings = pd.read_csv("ratings.csv")
+movies = pd.read_csv("ml-32m/movies.csv ")  # Ensure you have the MovieLens dataset
+ratings = pd.read_csv("ml-32m/ratings.csv")
 
 # Inspect datasets
 print("Movies Dataset:\n", movies.head())
