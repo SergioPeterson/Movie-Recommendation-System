@@ -1,5 +1,3 @@
-Here’s a detailed README.md for your Movie Recommendation System project:
-
 Movie Recommendation System
 
 Project Overview
